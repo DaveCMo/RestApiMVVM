@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,9 +18,12 @@ import android.view.MenuItem;
 import com.codingwithmitch.foodrecipes.adapters.OnRecipeListener;
 import com.codingwithmitch.foodrecipes.adapters.RecipeRecyclerAdapter;
 import com.codingwithmitch.foodrecipes.models.Recipe;
+import com.codingwithmitch.foodrecipes.requests.SWCTests.GenerateNewPlayerJson;
 import com.codingwithmitch.foodrecipes.util.Testing;
 import com.codingwithmitch.foodrecipes.util.VerticalSpacingItemDecorator;
 import com.codingwithmitch.foodrecipes.viewmodels.RecipeListViewModel;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 import java.util.List;
@@ -52,9 +54,26 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
             // display search categories
             displaySearchCategories();
         }
+
+
+        try {
+            String personJson = null;
+            GenerateNewPlayerJson generateNewPlayerJson = new GenerateNewPlayerJson();
+            GsonBuilder builder = new GsonBuilder();
+            builder.setVersion(2.0);
+
+            Gson gson = builder.create();
+
+            personJson = gson.toJson(generateNewPlayerJson);
+            System.out.println(personJson);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+
         setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
     }
-
     private void subscribeObservers(){
         mRecipeListViewModel.getRecipes().observe(this, new Observer<List<Recipe>>() {
             @Override
